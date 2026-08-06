@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "1vT75aqsfSk=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\asus\\Desktop\\Wubba labba dab dab\\Github\\BoomKhqii\\Course-Flow-AI\\Course-Flow-AI\\backend\\backend.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\asus\\.nuget\\packages\\microsoft.aspnetcore.openapi\\9.0.13\\microsoft.aspnetcore.openapi.9.0.13.nupkg.sha512",
+    "C:\\Users\\asus\\.nuget\\packages\\microsoft.openapi\\1.6.17\\microsoft.openapi.1.6.17.nupkg.sha512"
+  ],
+  "logs": []
+}
