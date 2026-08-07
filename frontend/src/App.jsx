@@ -15,6 +15,8 @@ const suggestions = [
   'Could you create a timetable for my classes?',
 ]
 
+// Static array, needs to be a list
+// 
 const calendarEvents = [
   { id: 1, date: '2026-08-03', title: 'Research Methods', meta: 'Lecture · Room 204', time: 9.5, duration: 1.5, tone: 'blue' },
   { id: 2, date: '2026-08-03', title: 'Quiz review', meta: '45 min focus block', time: 14, duration: 0.75, tone: 'peach' },
@@ -73,6 +75,7 @@ const formatClockTime = (hour) => {
   return `${displayHour}:${String(minutes).padStart(2, '0')} ${suffix}`
 }
 
+// needs to be a list
 const initialTasks = [
   { id: 1, title: 'Research proposal', course: 'Research Methods', due: 'Today, 5:00 PM', priority: 'High', done: false },
   { id: 2, title: 'Algorithm quiz', course: 'Algorithms', due: 'Friday, 4:00 PM', priority: 'Medium', done: false },
@@ -196,18 +199,66 @@ function AppHeader({ activeTab, setActiveTab, onHome }) {
 }
 
 function ChatView() {
-  const [messages, setMessages] = useState(starterMessages)
-  const [draft, setDraft] = useState('')
-  const [voiceNotice, setVoiceNotice] = useState(false)
+    const [messages, setMessages] = useState(starterMessages)
+    const [draft, setDraft] = useState('')
+    const [voiceNotice, setVoiceNotice] = useState(false)
 
-  const sendMessage = (event) => {
-    event.preventDefault()
-    const cleanDraft = draft.trim()
-    if (!cleanDraft) return
-    setMessages((current) => [...current, { id: Date.now(), role: 'user', text: cleanDraft }])
-    setDraft('')
-  }
+    const [isAnalysing, setIsAnalysing] = useState(false)
+    const [error, setError] = useState(null)
+    const [analysis, setAnalysis] = useState(null)
 
+    const sendMessage = async (event) => {
+        event.preventDefault()
+
+        const cleanDraft = draft.trim()
+
+        if (!cleanDraft || isAnalysing) return
+
+        setMessages((current) => [
+            ...current,
+            {
+                id: Date.now(),
+                role: 'user',
+                text: cleanDraft,
+            },
+        ])
+
+        setDraft('')
+        setError(null)
+        setIsAnalysing(true)
+
+        try {
+            const response = await fetch(
+                'http://127.0.0.1:5011/api/analyze',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Accept: 'application/json',
+                    },
+                    body: JSON.stringify({
+                        instructions: cleanDraft,
+                    }),
+                },
+            )
+
+            if (!response.ok) {
+                throw new Error('The assignment could not be analysed.')
+            }
+
+            const result = await response.json()
+
+            setAnalysis(result)
+        } catch (requestError) {
+            setError(
+                requestError instanceof Error
+                    ? requestError.message
+                    : 'Something went wrong.',
+            )
+        } finally {
+            setIsAnalysing(false)
+        }
+    }
   const selectSuggestion = (suggestion) => setDraft(suggestion)
 
   return (
@@ -221,14 +272,49 @@ function ChatView() {
             <p>Start with a deadline, a subject, or anything that feels overwhelming.</p>
           </div>
         </div>
-
         <div className="conversation" aria-live="polite">
-          {messages.map((message) => (
-            <div className={`message-row message-row--${message.role}`} key={message.id}>
-              {message.role === 'assistant' && <span className="message-avatar" aria-hidden="true">✦</span>}
-              <div className="message-bubble">{message.text}</div>
-            </div>
-          ))}
+            {messages.map((message) => (
+                <div
+                    className={`message-row message-row--${message.role}`}
+                    key={message.id}
+                >
+                {message.role === 'assistant' && (
+                    <span className="message-avatar" aria-hidden="true">
+                        ✦
+                    </span>
+                )}
+
+                    <div className="message-bubble">
+                        {message.text}
+                    </div>
+                </div>
+            ))}
+
+            {isAnalysing && (
+                <div className="message-row message-row--assistant">
+                    <span className="message-avatar" aria-hidden="true">
+                        ✦
+                    </span>
+
+                    <div className="message-bubble">
+                        Analysing assignment…
+                    </div>
+                </div>
+            )}
+
+            {error && (
+                <div className="message-row message-row--assistant">
+                    <div className="message-bubble error-message">
+                        {error}
+                    </div>
+                </div>
+            )}
+
+            {analysis && (
+                <pre className="message-bubble">
+                    {JSON.stringify(analysis, null, 2)}
+                </pre>
+            )}
         </div>
 
         {messages.length === 1 && (
@@ -241,7 +327,7 @@ function ChatView() {
           </div>
         )}
 
-        <form className="composer" onSubmit={sendMessage}>
+      <form className="composer" onSubmit={sendMessage}>
           <button className="add-button" type="button" aria-label="Add an attachment"><span aria-hidden="true">＋</span></button>
           <label className="sr-only" htmlFor="chat-message">Message Course Flow</label>
           <textarea

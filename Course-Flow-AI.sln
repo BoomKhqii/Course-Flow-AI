@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.37012.4 d17.14
+VisualStudioVersion = 17.14.37012.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "frontend", "frontend\frontend.esproj", "{462EE049-9FE1-B47D-1B3E-22BACA5D9185}"
 EndProject
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "backend", "..\backend\backend.pyproj", "{15F3A489-610F-4905-9A12-2CFDAB4A175B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "backend", "backend\backend.csproj", "{30A0B536-821F-4B8C-B3C4-7F59BA478C23}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,8 +19,10 @@ Global
 		{462EE049-9FE1-B47D-1B3E-22BACA5D9185}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{462EE049-9FE1-B47D-1B3E-22BACA5D9185}.Release|Any CPU.Build.0 = Release|Any CPU
 		{462EE049-9FE1-B47D-1B3E-22BACA5D9185}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{15F3A489-610F-4905-9A12-2CFDAB4A175B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{15F3A489-610F-4905-9A12-2CFDAB4A175B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30A0B536-821F-4B8C-B3C4-7F59BA478C23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30A0B536-821F-4B8C-B3C4-7F59BA478C23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30A0B536-821F-4B8C-B3C4-7F59BA478C23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30A0B536-821F-4B8C-B3C4-7F59BA478C23}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
