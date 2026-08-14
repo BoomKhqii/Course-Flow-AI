@@ -8,6 +8,8 @@
 
         public DateOnly? Deadline { get; set; }
 
+        public string? DeadlineTime { get; set; }
+
         public List<string> Requirements { get; set; } = new();
 
         public List<AssignmentTask> Tasks { get; set; } = new();

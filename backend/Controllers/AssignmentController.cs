@@ -16,7 +16,7 @@ public sealed class AssignmentController : ControllerBase
     }
 
     [HttpPost("analyze")]
-    public async Task<ActionResult<AssignmentAnalysis>> Analyze(
+    public async Task<ActionResult<AssignmentAnalysisBatch>> Analyze(
         [FromBody] AssignmentRequest request,
         CancellationToken cancellationToken)
     {
@@ -24,6 +24,9 @@ public sealed class AssignmentController : ControllerBase
         {
             var analysis = await _geminiService.AnalyzeAsync(
                 request.Instructions,
+                request.CurrentDate ?? DateOnly.FromDateTime(DateTime.UtcNow),
+                string.IsNullOrWhiteSpace(request.TimeZone) ? "UTC" : request.TimeZone.Trim(),
+                string.IsNullOrWhiteSpace(request.Locale) ? "en" : request.Locale.Trim(),
                 cancellationToken);
 
             return Ok(analysis);

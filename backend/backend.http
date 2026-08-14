@@ -1,6 +1,14 @@
-@backend_HostAddress = http://localhost:5011
+@Backend_HostAddress = http://127.0.0.1:5011
 
-GET {{backend_HostAddress}}/weatherforecast/
+POST {{backend_HostAddress}}/api/analyze
+Content-Type: application/json
 Accept: application/json
+
+{
+  "currentDate": "2026-08-07",
+  "timeZone": "Australia/Sydney",
+  "locale": "en-AU",
+  "instructions": "Computer Networks Lab 4 is due tomorrow. Configure the network, test connectivity, capture screenshots, and submit a report. Database Systems Normalisation Exercise is due next Monday and requires dependency analysis, conversion to third normal form, and an explanation of each decomposition."
+}
 
 ###
